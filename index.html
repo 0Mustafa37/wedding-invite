@@ -4,1528 +4,1053 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mustafa & Salma — Wedding Invitation</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=Cinzel:wght@400;500;600;700&family=Amiri:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Amiri:wght@400;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <style>
-*, *::before, *::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --ivory: #FAF6F0;
-  --cream: #F5EDE3;
-  --warm-cream: #EDE4D6;
-  --gold: #C9A96E;
-  --gold-light: #D4B87A;
-  --gold-dark: #A68B5B;
-  --gold-shimmer: #E8D5A3;
-  --champagne: #F7E7CE;
-  --deep-brown: #5C4A32;
-  --text-primary: #3D2E1F;
-  --text-secondary: #6B5B4A;
-  --text-light: #8B7B6A;
-  --white: #FFFFFF;
-  --shadow-soft: 0 4px 20px rgba(92, 74, 50, 0.08);
-  --shadow-medium: 0 8px 40px rgba(92, 74, 50, 0.12);
-  --shadow-heavy: 0 16px 60px rgba(92, 74, 50, 0.16);
-}
-
-html {
-  scroll-behavior: smooth;
-  overflow-x: hidden;
-}
-
-body {
-  font-family: 'Inter', sans-serif;
-  background: var(--ivory);
-  color: var(--text-primary);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Noise Texture Overlay */
-body::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 10000;
-}
-
-/* ==================== ENVELOPE OVERLAY ==================== */
-.envelope-overlay {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, var(--cream) 0%, var(--warm-cream) 50%, var(--cream) 100%);
-  transition: opacity 0.8s ease, visibility 0.8s ease;
-}
-
-.envelope-overlay.opened {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.envelope-container {
-  perspective: 1200px;
-  cursor: pointer;
-  position: relative;
-}
-
-.envelope {
-  width: min(380px, 85vw);
-  height: min(260px, 55vw);
-  position: relative;
-  transform-style: preserve-3d;
-  transition: transform 0.3s ease;
-}
-
-.envelope-body {
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(180deg, #E8D5B8 0%, #D4B896 100%);
-  border-radius: 4px;
-  box-shadow: var(--shadow-heavy), inset 0 0 30px rgba(0,0,0,0.05);
-  position: relative;
-  overflow: hidden;
-}
-
-.envelope-body::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 50%, transparent 60%);
-}
-
-.envelope-flap {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
-  height: 55%;
-  transform-origin: top center;
-  transform: rotateX(0deg);
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 2;
-  background: linear-gradient(180deg, #D4B896 0%, #C4A882 100%);
-  clip-path: polygon(0 0, 50% 100%, 100% 0);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.envelope.open .envelope-flap {
-  transform: rotateX(-180deg);
-}
-
-.envelope-letter {
-  position: absolute;
-  top: 10%;
-  left: 8%;
-  width: 84%;
-  height: 80%;
-  background: var(--ivory);
-  border-radius: 2px;
-  box-shadow: var(--shadow-soft);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1) 0.4s;
-  z-index: 1;
-}
-
-.envelope.open .envelope-letter {
-  transform: translateY(-120%);
-}
-
-.letter-bismillah {
-  font-family: 'Amiri', serif;
-  font-size: 1.2rem;
-  color: var(--gold);
-  margin-bottom: 8px;
-}
-
-.letter-names {
-  font-family: 'Cinzel', serif;
-  font-size: 1.5rem;
-  color: var(--text-primary);
-  letter-spacing: 3px;
-  font-weight: 500;
-}
-
-.letter-amp {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  color: var(--gold);
-  font-size: 1.1rem;
-  margin: 2px 0;
-}
-
-.envelope-seal {
-  position: absolute;
-  bottom: 25%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold-dark));
-  box-shadow: 0 2px 10px rgba(169, 139, 91, 0.4), inset 0 1px 3px rgba(255,255,255,0.3);
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.5s ease 0.2s;
-}
-
-.envelope.open .envelope-seal {
-  opacity: 0;
-}
-
-.seal-inner {
-  width: 44px;
-  height: 44px;
-  border: 1px solid rgba(255,255,255,0.4);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.seal-pattern {
-  font-family: 'Amiri', serif;
-  color: rgba(255,255,255,0.8);
-  font-size: 0.7rem;
-}
-
-.envelope-hint {
-  position: absolute;
-  bottom: -60px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-family: 'Inter', sans-serif;
-  font-size: 0.8rem;
-  color: var(--text-light);
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  animation: pulseHint 2s ease-in-out infinite;
-  white-space: nowrap;
-}
-
-@keyframes pulseHint {
-  0%, 100% { opacity: 0.5; transform: translateX(-50%) translateY(0); }
-  50% { opacity: 1; transform: translateX(-50%) translateY(-5px); }
-}
-
-/* ==================== FLOATING PARTICLES ==================== */
-#particles-canvas {
-  position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  pointer-events: none;
-  z-index: 1;
-  opacity: 0.6;
-}
-
-/* ==================== MAIN CONTENT ==================== */
-.main-content {
-  opacity: 0;
-  transition: opacity 1s ease;
-}
-
-.main-content.visible {
-  opacity: 1;
-}
-
-/* ==================== ISLAMIC PATTERN BORDER ==================== */
-.islamic-border {
-  width: 100%;
-  max-width: 120px;
-  height: 2px;
-  margin: 0 auto;
-  position: relative;
-}
-
-.islamic-border::before {
-  content: '✦ ✦ ✦';
-  display: block;
-  text-align: center;
-  color: var(--gold);
-  font-size: 0.6rem;
-  letter-spacing: 8px;
-}
-
-/* ==================== SECTION BASE ==================== */
-section {
-  position: relative;
-  z-index: 2;
-}
-
-.section-inner {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 60px 24px;
-}
-
-/* ==================== HERO SECTION ==================== */
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 50%, var(--ivory) 100%);
-  position: relative;
-  overflow: hidden;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(ellipse at center, rgba(201, 169, 110, 0.05) 0%, transparent 70%);
-  animation: heroGlow 8s ease-in-out infinite alternate;
-}
-
-@keyframes heroGlow {
-  0% { transform: translate(0, 0) scale(1); }
-  100% { transform: translate(2%, 2%) scale(1.05); }
-}
-
-.hero-ornament-top {
-  font-family: 'Amiri', serif;
-  font-size: 1.8rem;
-  color: var(--gold);
-  margin-bottom: 10px;
-  opacity: 0;
-}
-
-.hero-bismillah {
-  font-family: 'Amiri', serif;
-  font-size: 1.6rem;
-  color: var(--gold);
-  margin-bottom: 40px;
-  opacity: 0;
-  line-height: 1.8;
-}
-
-.hero-divider {
-  width: 200px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin-bottom: 40px;
-  opacity: 0;
-}
-
-.hero-names {
-  opacity: 0;
-}
-
-.hero-name {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2.5rem, 7vw, 4.5rem);
-  font-weight: 400;
-  color: var(--text-primary);
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  display: block;
-}
-
-.hero-amp {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
-  color: var(--gold);
-  display: block;
-  margin: 5px 0;
-  font-weight: 400;
-}
-
-.hero-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(0.8rem, 2vw, 1rem);
-  color: var(--text-secondary);
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin-top: 30px;
-  font-weight: 300;
-  opacity: 0;
-  line-height: 1.8;
-}
-
-.hero-date {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.9rem, 2.5vw, 1.1rem);
-  color: var(--text-secondary);
-  letter-spacing: 4px;
-  margin-top: 25px;
-  font-weight: 400;
-  opacity: 0;
-}
-
-.scroll-indicator {
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  opacity: 0;
-}
-
-.scroll-line {
-  width: 1px;
-  height: 40px;
-  background: linear-gradient(180deg, var(--gold), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-
-@keyframes scrollPulse {
-  0%, 100% { transform: scaleY(1); opacity: 0.5; }
-  50% { transform: scaleY(1.5); opacity: 1; }
-}
-
-.scroll-text {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-light);
-}
-
-/* ==================== INVITATION MESSAGE ==================== */
-.invitation-section {
-  background: var(--ivory);
-  position: relative;
-}
-
-.invitation-section::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a96e' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  pointer-events: none;
-}
-
-.paper-card {
-  background: linear-gradient(135deg, var(--white) 0%, var(--ivory) 100%);
-  border-radius: 8px;
-  padding: 50px 40px;
-  box-shadow: var(--shadow-medium), 0 0 0 1px rgba(201, 169, 110, 0.1);
-  position: relative;
-  overflow: hidden;
-}
-
-.paper-card::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: linear-gradient(135deg, transparent 45%, rgba(201, 169, 110, 0.03) 50%, transparent 55%);
-  pointer-events: none;
-}
-
-.paper-card-corner {
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  border-color: var(--gold);
-  border-style: solid;
-  opacity: 0.4;
-}
-
-.paper-card-corner.tl { top: 15px; left: 15px; border-width: 1px 0 0 1px; }
-.paper-card-corner.tr { top: 15px; right: 15px; border-width: 1px 1px 0 0; }
-.paper-card-corner.bl { bottom: 15px; left: 15px; border-width: 0 0 1px 1px; }
-.paper-card-corner.br { bottom: 15px; right: 15px; border-width: 0 1px 1px 0; }
-
-.invitation-text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1rem, 2.5vw, 1.25rem);
-  color: var(--text-secondary);
-  text-align: center;
-  line-height: 2;
-  font-weight: 400;
-  font-style: italic;
-}
-
-.invitation-text .highlight {
-  color: var(--text-primary);
-  font-style: normal;
-  font-weight: 500;
-}
-
-.invitation-ornament {
-  text-align: center;
-  margin: 30px 0;
-  color: var(--gold);
-  font-size: 1.2rem;
-  letter-spacing: 6px;
-}
-
-/* ==================== COUNTDOWN SECTION ==================== */
-.countdown-section {
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 50%, var(--ivory) 100%);
-}
-
-.countdown-label {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(0.7rem, 2vw, 0.85rem);
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--text-light);
-  text-align: center;
-  margin-bottom: 40px;
-}
-
-.countdown-container {
-  display: flex;
-  justify-content: center;
-  gap: clamp(12px, 4vw, 30px);
-  flex-wrap: wrap;
-}
-
-.countdown-item {
-  text-align: center;
-  min-width: 80px;
-}
-
-.countdown-value-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.countdown-value {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2.5rem, 8vw, 4rem);
-  font-weight: 400;
-  color: var(--text-primary);
-  line-height: 1;
-  display: block;
-  position: relative;
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.countdown-value.changing {
-  animation: flipChange 0.6s ease;
-}
-
-@keyframes flipChange {
-  0% { transform: translateY(0); }
-  50% { transform: translateY(-8px); color: var(--gold); }
-  100% { transform: translateY(0); }
-}
-
-.countdown-value::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-}
-
-.countdown-unit {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-light);
-  margin-top: 10px;
-  display: block;
-}
-
-.countdown-separator {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(2rem, 6vw, 3rem);
-  color: var(--gold);
-  align-self: flex-start;
-  margin-top: 5px;
-  opacity: 0.5;
-}
-
-/* ==================== EVENT DETAILS ==================== */
-.details-section {
-  background: var(--ivory);
-}
-
-.details-card {
-  background: linear-gradient(135deg, var(--white) 0%, var(--ivory) 100%);
-  border-radius: 8px;
-  padding: 50px 40px;
-  box-shadow: var(--shadow-medium), 0 0 0 1px rgba(201, 169, 110, 0.1);
-  text-align: center;
-}
-
-.details-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  color: var(--text-primary);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 40px;
-  font-weight: 400;
-}
-
-.detail-item {
-  margin-bottom: 35px;
-  position: relative;
-}
-
-.detail-item:last-child {
-  margin-bottom: 0;
-}
-
-.detail-icon {
-  width: 50px;
-  height: 50px;
-  margin: 0 auto 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid var(--gold);
-  border-radius: 50%;
-  color: var(--gold);
-  font-size: 1.2rem;
-}
-
-.detail-label {
-  font-family: 'Cinzel', serif;
-  font-size: 0.75rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--text-light);
-  margin-bottom: 8px;
-}
-
-.detail-value {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.1rem, 3vw, 1.4rem);
-  color: var(--text-primary);
-  font-weight: 500;
-  line-height: 1.6;
-}
-
-.detail-sub {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  margin-top: 4px;
-  font-weight: 300;
-}
-
-.detail-divider {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  margin: 30px auto;
-}
-
-/* ==================== QURANIC VERSE ==================== */
-.verse-section {
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 50%, var(--ivory) 100%);
-  text-align: center;
-}
-
-.verse-container {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 50px 30px;
-  position: relative;
-}
-
-.verse-arabic {
-  font-family: 'Amiri', serif;
-  font-size: clamp(1.3rem, 4vw, 1.8rem);
-  color: var(--gold);
-  line-height: 2.2;
-  margin-bottom: 30px;
-  direction: rtl;
-}
-
-.verse-translation {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: clamp(0.95rem, 2.5vw, 1.15rem);
-  color: var(--text-secondary);
-  line-height: 1.9;
-  margin-bottom: 20px;
-}
-
-.verse-reference {
-  font-family: 'Cinzel', serif;
-  font-size: 0.7rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--text-light);
-}
-
-.verse-quote-mark {
-  font-family: 'Playfair Display', serif;
-  font-size: 4rem;
-  color: var(--gold);
-  opacity: 0.2;
-  line-height: 1;
-}
-
-/* ==================== RSVP SECTION ==================== */
-.rsvp-section {
-  background: var(--ivory);
-  text-align: center;
-}
-
-.rsvp-card {
-  background: linear-gradient(135deg, var(--white) 0%, var(--ivory) 100%);
-  border-radius: 8px;
-  padding: 50px 40px;
-  box-shadow: var(--shadow-medium), 0 0 0 1px rgba(201, 169, 110, 0.1);
-  max-width: 500px;
-  margin: 0 auto;
-}
-
-.rsvp-title {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  color: var(--text-primary);
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-  font-weight: 400;
-}
-
-.rsvp-text {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: clamp(0.9rem, 2vw, 1.05rem);
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 35px;
-}
-
-.rsvp-btn {
-  display: inline-block;
-  padding: 16px 50px;
-  font-family: 'Cinzel', serif;
-  font-size: 0.8rem;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--text-primary);
-  background: transparent;
-  border: 1px solid var(--gold);
-  border-radius: 0;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.4s ease;
-  text-decoration: none;
-}
-
-.rsvp-btn::before {
-  content: '';
-  position: absolute;
-  top: 0; left: -100%;
-  width: 100%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(201, 169, 110, 0.15), transparent);
-  transition: left 0.6s ease;
-}
-
-.rsvp-btn:hover::before {
-  left: 100%;
-}
-
-.rsvp-btn:hover {
-  background: var(--gold);
-  color: var(--white);
-  box-shadow: 0 4px 20px rgba(201, 169, 110, 0.3);
-  transform: translateY(-2px);
-}
-
-.rsvp-btn:active {
-  transform: translateY(0);
-}
-
-.rsvp-btn-ripple {
-  position: absolute;
-  border-radius: 50%;
-  background: rgba(201, 169, 110, 0.3);
-  transform: scale(0);
-  animation: ripple 0.6s ease-out;
-  pointer-events: none;
-}
-
-@keyframes ripple {
-  to { transform: scale(4); opacity: 0; }
-}
-
-/* ==================== FOOTER ==================== */
-.footer {
-  background: linear-gradient(180deg, var(--ivory) 0%, var(--cream) 100%);
-  text-align: center;
-  padding: 60px 24px 40px;
-}
-
-.footer-text {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
-  color: var(--text-secondary);
-  line-height: 1.8;
-  margin-bottom: 30px;
-}
-
-.footer-names {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(1rem, 3vw, 1.3rem);
-  color: var(--text-primary);
-  letter-spacing: 4px;
-  margin-bottom: 20px;
-}
-
-.footer-ornament {
-  color: var(--gold);
-  font-size: 0.8rem;
-  letter-spacing: 6px;
-  opacity: 0.6;
-}
-
-.footer-copy {
-  font-family: 'Inter', sans-serif;
-  font-size: 0.65rem;
-  color: var(--text-light);
-  letter-spacing: 2px;
-  margin-top: 30px;
-  text-transform: uppercase;
-}
-
-/* ==================== AUDIO TOGGLE ==================== */
-.audio-toggle {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  background: var(--white);
-  border: 1px solid var(--gold);
-  cursor: pointer;
-  z-index: 9998;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-soft);
-  transition: all 0.3s ease;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.audio-toggle.visible {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.audio-toggle:hover {
-  background: var(--gold);
-  box-shadow: 0 4px 15px rgba(201, 169, 110, 0.3);
-}
-
-.audio-toggle:hover .audio-icon {
-  color: var(--white);
-}
-
-.audio-icon {
-  color: var(--gold);
-  font-size: 1rem;
-  transition: color 0.3s ease;
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --gold:#C9A84C;--gold-light:#D4AF37;--gold-dark:#8B6914;--gold-shimmer:#E8D5A0;
+  --cream:#F5ECD7;--ivory:#FFF8E7;--warm-white:#FAF0DC;--parchment:#EDE0C8;
+  --dark-brown:#2C1810;--medium-brown:#5C3A1E;--light-brown:#8B7355;
+  --burgundy:#6B2D3E;
+}
+html{scroll-behavior:smooth;-webkit-font-smoothing:antialiased}
+body{font-family:'Cormorant Garamond',serif;background:var(--cream);color:var(--dark-brown);overflow-x:hidden}
+::selection{background:var(--gold);color:#fff}
+
+/* ═══════════════ ENVELOPE OVERLAY ═══════════════ */
+#envelope-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:9999;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at 40% 30%,#3a2a1a 0%,#1a0f08 50%,#0d0705 100%);
+  transition:opacity 1s ease;
+}
+#envelope-overlay.hidden{pointer-events:none;opacity:0}
+
+.envelope-scene{
+  perspective:1400px;
+  width:min(440px,88vw);
+  position:relative;
+  cursor:pointer;
+}
+
+.envelope{
+  width:100%;position:relative;
+  transform-style:preserve-3d;
+  transform:rotateX(0deg) rotateY(0deg);
+  transition:transform 0.4s ease;
+}
+
+/* Envelope back (body) */
+.envelope-body{
+  position:relative;width:100%;
+  padding-bottom:65%;
+  background:
+    linear-gradient(175deg,#E8DCC0 0%,#DDD1B5 30%,#D4C8A8 60%,#CFC3A0 100%);
+  border-radius:6px;
+  box-shadow:
+    0 12px 40px rgba(0,0,0,0.45),
+    0 4px 12px rgba(0,0,0,0.3),
+    inset 0 1px 0 rgba(255,255,255,0.35),
+    inset 0 -1px 0 rgba(0,0,0,0.05);
+  overflow:hidden;
+  z-index:1;
+}
+
+/* Paper grain texture */
+.envelope-body::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(139,115,85,0.025) 2px,rgba(139,115,85,0.025) 3px),
+    repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(139,115,85,0.025) 2px,rgba(139,115,85,0.025) 3px),
+    repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(139,115,85,0.012) 6px,rgba(139,115,85,0.012) 7px);
+  opacity:0.8;
+}
+
+/* Soft directional light (top-left) */
+.envelope-body::after{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(135deg,rgba(255,255,255,0.18) 0%,rgba(255,255,255,0.04) 30%,transparent 50%,rgba(0,0,0,0.03) 80%,rgba(0,0,0,0.06) 100%);
+}
+
+/* Subtle embossed Islamic pattern on envelope */
+.envelope-emboss{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  opacity:0.025;pointer-events:none;z-index:1;
+  background-image:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%235C3A1E' stroke-width='0.6'%3E%3Cpath d='M30 5L33 27L55 30L33 33L30 55L27 33L5 30L27 27Z'/%3E%3Crect x='18' y='18' width='24' height='24' transform='rotate(45 30 30)'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:60px 60px;
+}
+
+/* Gold border accent on envelope */
+.envelope-gold-border{
+  position:absolute;top:12px;left:12px;right:12px;bottom:12px;
+  border:1px solid rgba(201,168,76,0.12);border-radius:3px;
+  pointer-events:none;z-index:2;
+}
+
+/* Inner card visible peeking out */
+.envelope-inner-card{
+  position:absolute;bottom:0;left:7%;width:86%;height:55%;
+  background:linear-gradient(180deg,#FFFDF5 0%,#FFFBF0 30%,var(--ivory) 100%);
+  border-radius:3px 3px 0 0;
+  box-shadow:0 -2px 12px rgba(0,0,0,0.08),inset 0 1px 0 rgba(255,255,255,0.8);
+  z-index:0;
+  display:flex;align-items:center;justify-content:center;flex-direction:column;
+  gap:6px;padding:12px;
+  transition:transform 1.4s cubic-bezier(0.23,1,0.32,1);
+}
+.envelope-inner-card.slide-up{transform:translateY(-140%)}
+
+.envelope-inner-card .card-ornament{
+  width:40px;height:1px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0.4;
+}
+.envelope-inner-card span{
+  font-family:'Cinzel',serif;font-size:clamp(9px,2.2vw,13px);
+  color:var(--gold);letter-spacing:4px;text-transform:uppercase;opacity:0.5;
 }
 
-.audio-bars {
-  display: flex;
-  align-items: flex-end;
-  gap: 2px;
-  height: 16px;
-}
-
-.audio-bar {
-  width: 2px;
-  background: currentColor;
-  border-radius: 1px;
-  transition: height 0.3s ease;
-}
-
-.audio-toggle.playing .audio-bar:nth-child(1) { animation: audioBar1 0.8s ease-in-out infinite; }
-.audio-toggle.playing .audio-bar:nth-child(2) { animation: audioBar2 0.6s ease-in-out infinite; }
-.audio-toggle.playing .audio-bar:nth-child(3) { animation: audioBar3 0.7s ease-in-out infinite; }
-.audio-toggle.playing .audio-bar:nth-child(4) { animation: audioBar4 0.5s ease-in-out infinite; }
+/* Envelope flap */
+.envelope-flap-wrapper{
+  position:absolute;top:0;left:0;width:100%;
+  padding-bottom:48%;
+  transform-style:preserve-3d;
+  transform-origin:top center;
+  z-index:3;
+}
 
-@keyframes audioBar1 { 0%, 100% { height: 4px; } 50% { height: 14px; } }
-@keyframes audioBar2 { 0%, 100% { height: 8px; } 50% { height: 16px; } }
-@keyframes audioBar3 { 0%, 100% { height: 6px; } 50% { height: 12px; } }
-@keyframes audioBar4 { 0%, 100% { height: 10px; } 50% { height: 16px; } }
+.envelope-flap{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(178deg,#DDD1B5 0%,#D6C9A8 40%,#CEC19E 70%,#C8BB95 100%);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top center;
+  box-shadow:0 4px 16px rgba(0,0,0,0.15);
+}
 
-.audio-toggle:not(.playing) .audio-bar { height: 2px !important; animation: none !important; }
+.envelope-flap::before{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:
+    repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(139,115,85,0.025) 2px,rgba(139,115,85,0.025) 3px),
+    repeating-linear-gradient(90deg,transparent,transparent 2px,rgba(139,115,85,0.025) 2px,rgba(139,115,85,0.025) 3px);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
 
-/* ==================== RESPONSIVE ==================== */
-@media (max-width: 768px) {
-  .paper-card, .details-card, .rsvp-card {
-    padding: 35px 25px;
-  }
+.envelope-flap::after{
+  content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(135deg,rgba(255,255,255,0.15) 0%,transparent 35%,rgba(0,0,0,0.03) 80%);
+  clip-path:polygon(0 0,100% 0,50% 100%);
+}
 
-  .paper-card-corner {
-    width: 25px;
-    height: 25px;
-  }
+/* Flap inner lining (visible when open) */
+.envelope-flap-lining{
+  position:absolute;top:0;left:0;width:100%;height:100%;
+  background:linear-gradient(180deg,rgba(201,168,76,0.08),rgba(201,168,76,0.03));
+  clip-path:polygon(0 0,100% 0,50% 100%);
+  transform:rotateX(180deg);backface-visibility:hidden;
+  transform-origin:top center;
+}
 
-  .countdown-container {
-    gap: 8px;
-  }
+/* Gold monogram on flap */
+.flap-monogram{
+  position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Cinzel',serif;font-size:clamp(14px,3.5vw,20px);font-weight:400;
+  color:rgba(201,168,76,0.1);letter-spacing:6px;
+  text-shadow:0 1px 1px rgba(255,255,255,0.3);
+  pointer-events:none;z-index:1;
+}
 
-  .countdown-item {
-    min-width: 65px;
-  }
+/* Click prompt */
+.open-prompt{
+  margin-top:clamp(28px,6vw,48px);
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+.open-prompt-text{
+  font-family:'Cinzel',serif;font-size:clamp(11px,2.5vw,15px);
+  color:rgba(201,168,76,0.55);letter-spacing:5px;text-transform:uppercase;
+}
+.open-prompt-line{
+  width:60px;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(201,168,76,0.3),transparent);
+}
+.open-prompt-icon{
+  width:28px;height:28px;
+  border:1px solid rgba(201,168,76,0.2);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  animation:prompt-breathe 2.5s ease-in-out infinite;
+}
+.open-prompt-icon svg{width:14px;height:14px;stroke:rgba(201,168,76,0.4);fill:none;stroke-width:1.5}
 
-  .countdown-separator {
-    display: none;
-  }
+@keyframes prompt-breathe{
+  0%,100%{opacity:0.4;transform:scale(1)}
+  50%{opacity:0.9;transform:scale(1.08)}
+}
 
-  .section-inner {
-    padding: 40px 20px;
-  }
+/* ═══════════════ MAIN CONTENT ═══════════════ */
+#main-content{
+  display:none;position:relative;
+  background:
+    linear-gradient(180deg,var(--ivory) 0%,var(--cream) 15%,var(--parchment) 45%,var(--cream) 75%,var(--ivory) 100%);
+  min-height:100vh;
+}
 
-  .envelope {
-    width: min(320px, 80vw);
-    height: min(220px, 50vw);
-  }
+/* Islamic geometric pattern overlay */
+.pattern-overlay{
+  position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg width='80' height='80' viewBox='0 0 80 80' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='0.4' opacity='0.055'%3E%3Cpath d='M40 5L43 37L75 40L43 43L40 75L37 43L5 40L37 37Z'/%3E%3Crect x='22' y='22' width='36' height='36' transform='rotate(45 40 40)'/%3E%3Ccircle cx='40' cy='40' r='18'/%3E%3C/g%3E%3C/svg%3E");
+  background-size:80px 80px;
 }
 
-@media (max-width: 480px) {
-  .hero-name {
-    letter-spacing: 3px;
-  }
+/* Mosque silhouette */
+.mosque-silhouette{
+  position:fixed;bottom:0;left:0;width:100%;height:30vh;pointer-events:none;z-index:0;opacity:0.02;
+}
 
-  .hero-subtitle {
-    letter-spacing: 1.5px;
-  }
+/* Floating particles */
+#particles-container{
+  position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:hidden;
+}
+.dust-particle{
+  position:absolute;background:rgba(201,168,76,0.2);border-radius:50%;
+  animation:float-dust linear infinite;pointer-events:none;
+}
+@keyframes float-dust{
+  0%{transform:translateY(0) translateX(0) scale(1);opacity:0}
+  12%{opacity:0.5}
+  88%{opacity:0.15}
+  100%{transform:translateY(-100vh) translateX(50px) scale(0.2);opacity:0}
+}
 
-  .countdown-item {
-    min-width: 55px;
-  }
+.content-wrapper{position:relative;z-index:2}
 
-  .countdown-value {
-    font-size: 2rem;
-  }
+/* ═══════════════ SECTIONS ═══════════════ */
+.section{
+  padding:clamp(56px,11vw,110px) clamp(20px,5vw,80px);
+  max-width:780px;margin:0 auto;text-align:center;
 }
 
-/* ==================== ANIMATIONS ==================== */
-.reveal {
-  opacity: 0;
-  transform: translateY(30px);
+/* Ornamental divider */
+.divider{
+  width:clamp(180px,45vw,340px);height:28px;margin:0 auto;
+  display:flex;align-items:center;justify-content:center;gap:14px;
+  opacity:0.3;
 }
-
-.reveal-left {
-  opacity: 0;
-  transform: translateX(-30px);
+.divider-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.divider-diamond{
+  width:7px;height:7px;border:1px solid var(--gold);transform:rotate(45deg);
+  background:var(--gold);opacity:0.5;
 }
 
-.reveal-right {
-  opacity: 0;
-  transform: translateX(30px);
+/* ═══════════════ NAMES SECTION ═══════════════ */
+.bismillah{
+  font-family:'Amiri',serif;font-size:clamp(22px,5vw,36px);
+  color:var(--gold);margin-bottom:6px;direction:rtl;
+  text-shadow:0 1px 3px rgba(201,168,76,0.15);
 }
+.bismillah-en{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(12px,2.3vw,15px);
+  color:var(--light-brown);letter-spacing:2px;font-style:italic;
+  margin-bottom:clamp(28px,5vw,56px);
+}
 
-.reveal-scale {
-  opacity: 0;
-  transform: scale(0.9);
+.names-section h1{
+  font-family:'Cinzel',serif;font-size:clamp(34px,9vw,72px);font-weight:400;
+  color:var(--dark-brown);letter-spacing:clamp(3px,1vw,8px);
+  line-height:1.15;margin-bottom:4px;
+}
+.names-ampersand{
+  font-family:'Playfair Display',serif;font-size:clamp(26px,5.5vw,46px);
+  color:var(--gold);font-style:italic;display:block;
+  margin:clamp(4px,1vw,10px) 0;
 }
+.names-section .date-line{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(13px,2.8vw,19px);
+  color:var(--light-brown);letter-spacing:4px;text-transform:uppercase;
+  margin-top:clamp(14px,3vw,28px);
+}
 
-/* Gold shimmer effect for text */
-.gold-shimmer {
-  background: linear-gradient(90deg, var(--gold-dark), var(--gold-light), var(--gold-shimmer), var(--gold-light), var(--gold-dark));
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 3s linear infinite;
+/* ═══════════════ INVITATION TEXT ═══════════════ */
+.invitation-text{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(17px,3.2vw,23px);
+  line-height:1.9;color:var(--medium-brown);font-weight:400;
+  max-width:580px;margin:0 auto;
 }
+.invitation-text strong{
+  color:var(--gold-dark);font-weight:600;
+}
 
-@keyframes shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+/* ═══════════════ COUNTDOWN ═══════════════ */
+.countdown-card{
+  background:linear-gradient(135deg,rgba(44,24,16,0.03),rgba(201,168,76,0.05));
+  border:1px solid rgba(201,168,76,0.12);border-radius:12px;
+  padding:clamp(22px,4.5vw,44px);margin:0 auto;max-width:580px;
+  box-shadow:0 4px 24px rgba(44,24,16,0.05);
+}
+.countdown-grid{
+  display:flex;justify-content:center;gap:clamp(10px,4vw,30px);
+  margin-top:14px;
 }
+.countdown-item{display:flex;flex-direction:column;align-items:center}
+.countdown-number{
+  font-family:'Cinzel',serif;font-size:clamp(30px,7.5vw,54px);font-weight:600;
+  color:var(--dark-brown);line-height:1;min-width:2ch;text-align:center;
+  position:relative;
+}
+.countdown-number::after{
+  content:'';position:absolute;bottom:-4px;left:10%;width:80%;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+  opacity:0.25;
+}
+.countdown-label{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(10px,1.8vw,13px);
+  color:var(--light-brown);letter-spacing:3px;text-transform:uppercase;
+  margin-top:8px;
+}
+.countdown-item.days .countdown-number{
+  font-size:clamp(38px,9.5vw,66px);color:var(--gold-dark);
+}
+
+/* ═══════════════ EVENT DETAILS ═══════════════ */
+.event-card{
+  background:linear-gradient(135deg,rgba(255,255,255,0.55),rgba(255,248,231,0.75));
+  border:1px solid rgba(201,168,76,0.15);border-radius:12px;
+  padding:clamp(26px,5vw,44px);max-width:480px;margin:0 auto;
+  box-shadow:0 8px 32px rgba(44,24,16,0.05);
+}
+.event-card h3{
+  font-family:'Cinzel',serif;font-size:clamp(14px,2.8vw,20px);
+  color:var(--gold-dark);letter-spacing:4px;text-transform:uppercase;
+  margin-bottom:18px;
+}
+.event-detail{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(15px,2.8vw,19px);
+  color:var(--medium-brown);line-height:1.8;
+}
+.event-detail .label{
+  font-size:0.82em;color:var(--light-brown);letter-spacing:2px;
+  text-transform:uppercase;display:block;margin-top:12px;
+}
 
-/* Parallax layers */
-.parallax-layer {
-  will-change: transform;
+/* ═══════════════ QURAN VERSE ═══════════════ */
+.verse-arabic{
+  font-family:'Amiri',serif;font-size:clamp(19px,4.2vw,30px);
+  color:var(--dark-brown);direction:rtl;line-height:2.1;
+  margin-bottom:18px;
+}
+.verse-english{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(14px,2.8vw,18px);
+  color:var(--medium-brown);font-style:italic;line-height:1.8;
+  max-width:520px;margin:0 auto;
 }
+.verse-reference{
+  font-family:'Cinzel',serif;font-size:clamp(11px,1.8vw,13px);
+  color:var(--gold);letter-spacing:3px;margin-top:14px;
+}
+
+/* ═══════════════ ARABIC NOTICE ═══════════════ */
+.arabic-notice{
+  background:linear-gradient(135deg,rgba(201,168,76,0.05),rgba(201,168,76,0.015));
+  border:1px solid rgba(201,168,76,0.1);border-radius:12px;
+  padding:clamp(22px,4.5vw,36px);max-width:520px;margin:0 auto;
+  direction:rtl;
+}
+.arabic-notice p{
+  font-family:'Amiri',serif;font-size:clamp(15px,3.2vw,21px);
+  color:var(--medium-brown);line-height:2.2;text-align:center;
+}
+.arabic-notice .highlight{
+  color:var(--gold-dark);font-weight:700;
+}
+
+/* ═══════════════ RSVP ═══════════════ */
+.rsvp-btn{
+  position:relative;overflow:hidden;
+  background:linear-gradient(135deg,var(--gold-dark),var(--gold),var(--gold-dark));
+  color:#fff;border:none;cursor:pointer;
+  padding:clamp(13px,2.8vw,17px) clamp(32px,7vw,60px);
+  font-family:'Cinzel',serif;font-size:clamp(12px,2.2vw,15px);
+  letter-spacing:4px;text-transform:uppercase;
+  border-radius:4px;
+  box-shadow:0 4px 16px rgba(139,105,20,0.22);
+  transition:transform 0.3s ease,box-shadow 0.3s ease;
+}
+.rsvp-btn:hover{
+  transform:translateY(-2px) scale(1.03);
+  box-shadow:0 8px 24px rgba(139,105,20,0.32);
+}
+.rsvp-btn:active{transform:scale(0.96)}
+.rsvp-btn::after{
+  content:'';position:absolute;top:-50%;left:-100%;width:60%;height:200%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);
+  transform:skewX(-20deg);transition:left 0.7s ease;
+}
+.rsvp-btn:hover::after{left:150%}
+
+/* ═══════════════ FOOTER ═══════════════ */
+.site-footer{
+  padding:clamp(36px,7vw,72px) 20px;text-align:center;
+  border-top:1px solid rgba(201,168,76,0.08);
+}
+.site-footer p{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(13px,2.3vw,16px);
+  color:var(--light-brown);line-height:1.8;
+}
+.footer-dua{
+  font-family:'Amiri',serif;font-size:clamp(17px,3.8vw,25px);
+  color:var(--gold);direction:rtl;margin-bottom:10px;
+}
+
+/* ═══════════════ AUDIO TOGGLE ═══════════════ */
+.audio-toggle{
+  position:fixed;bottom:22px;right:22px;width:42px;height:42px;
+  border-radius:50%;border:1px solid rgba(201,168,76,0.2);
+  background:rgba(44,24,16,0.72);color:var(--gold);cursor:pointer;
+  z-index:9998;display:none;align-items:center;justify-content:center;
+  transition:all 0.3s ease;backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.audio-toggle:hover{background:rgba(44,24,16,0.9);transform:scale(1.08)}
+.audio-toggle svg{width:16px;height:16px}
+
+/* ═══════════════ TOAST ═══════════════ */
+.toast{
+  position:fixed;bottom:76px;right:22px;
+  background:rgba(44,24,16,0.88);color:var(--gold-light);
+  padding:11px 18px;border-radius:8px;font-size:13px;
+  font-family:'Cormorant Garamond',serif;letter-spacing:1px;
+  z-index:10002;opacity:0;transform:translateY(10px);
+  transition:all 0.4s ease;backdrop-filter:blur(12px);
+  border:1px solid rgba(201,168,76,0.12);pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* Pulse animation for audio hint */
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.15);opacity:0.7}
+}
+
+/* ═══════════════ RESPONSIVE ═══════════════ */
+@media(max-width:640px){
+  .envelope-scene{width:92vw}
+  .countdown-grid{gap:6px}
+  .section{padding:44px 18px}
+}
+
+/* ═══════════════ ANIMATION CLASSES ═══════════════ */
+.fade-in-up{opacity:0;transform:translateY(30px)}
+.scale-in{opacity:0;transform:scale(0.92)}
+
+/* Glow pulse on countdown update */
+@keyframes glow-pulse{
+  0%{text-shadow:0 0 0 transparent}
+  50%{text-shadow:0 0 8px rgba(201,168,76,0.25)}
+  100%{text-shadow:0 0 0 transparent}
+}
+.countdown-number.glow{animation:glow-pulse 0.6s ease}
 </style>
 </head>
 <body>
 
-<!-- Floating Particles Canvas -->
-<canvas id="particles-canvas"></canvas>
-
-<!-- Audio Toggle -->
-<button class="audio-toggle" id="audioToggle" aria-label="Toggle ambient sound">
-  <div class="audio-bars">
-    <div class="audio-bar"></div>
-    <div class="audio-bar"></div>
-    <div class="audio-bar"></div>
-    <div class="audio-bar"></div>
-  </div>
-</button>
-
-<!-- ==================== ENVELOPE OVERLAY ==================== -->
-<div class="envelope-overlay" id="envelopeOverlay">
-  <div class="envelope-container" id="envelopeContainer">
+<!-- ═══════════════ ENVELOPE OVERLAY ═══════════════ -->
+<div id="envelope-overlay">
+  <div class="envelope-scene" id="envelope-scene">
     <div class="envelope" id="envelope">
-      <div class="envelope-flap"></div>
-      <div class="envelope-body">
-        <div class="envelope-letter">
-          <div class="letter-bismillah">بِسْمِ ٱللَّهِ</div>
-          <div class="letter-amp">&amp;</div>
-          <div class="letter-names">Mustafa & Salma</div>
+      <!-- Flap -->
+      <div class="envelope-flap-wrapper" id="flap-wrapper">
+        <div class="envelope-flap">
+          <span class="flap-monogram">M & S</span>
         </div>
+        <div class="envelope-flap-lining"></div>
       </div>
-      <div class="envelope-seal">
-        <div class="seal-inner">
-          <span class="seal-pattern">M&S</span>
+      <!-- Body -->
+      <div class="envelope-body">
+        <div class="envelope-emboss"></div>
+        <div class="envelope-gold-border"></div>
+        <div class="envelope-inner-card" id="inner-card">
+          <div class="card-ornament"></div>
+          <span>You Are Invited</span>
+          <div class="card-ornament"></div>
         </div>
       </div>
     </div>
-    <div class="envelope-hint">Tap to Open Invitation</div>
+  </div>
+  <div class="open-prompt" id="open-prompt">
+    <div class="open-prompt-icon">
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12l7 7 7-7"/>
+      </svg>
+    </div>
+    <div class="open-prompt-line"></div>
+    <span class="open-prompt-text">Tap to Open Invitation</span>
+    <div class="open-prompt-line"></div>
   </div>
 </div>
 
-<!-- ==================== MAIN CONTENT ==================== -->
-<div class="main-content" id="mainContent">
+<!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+<main id="main-content">
+  <div class="pattern-overlay"></div>
 
-  <!-- HERO SECTION -->
-  <section class="hero" id="hero">
-    <div class="hero-ornament-top">﷽</div>
-    <div class="hero-bismillah">بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ</div>
-    <div class="hero-divider"></div>
-    <div class="hero-names">
-      <span class="hero-name" id="heroName1">Mustafa</span>
-      <span class="hero-amp">&amp;</span>
-      <span class="hero-name" id="heroName2">Salma</span>
-    </div>
-    <div class="hero-subtitle">
-      Together with our families,<br>
-      we invite you to celebrate our wedding
-    </div>
-    <div class="hero-date">
-      6 · August · 2026
-    </div>
-    <div class="scroll-indicator">
-      <div class="scroll-line"></div>
-      <span class="scroll-text">Scroll</span>
-    </div>
-  </section>
+  <!-- Mosque silhouette -->
+  <svg class="mosque-silhouette" viewBox="0 0 1440 380" preserveAspectRatio="xMidYMax slice">
+    <path d="M520,380 L520,195 Q520,75 620,55 Q640,50 660,55 Q740,75 740,195 L740,380Z" fill="rgba(44,24,16,1)"/>
+    <path d="M600,55 Q620,18 640,55" fill="none" stroke="rgba(44,24,16,1)" stroke-width="2.5"/>
+    <circle cx="620" cy="22" r="5.5" fill="rgba(44,24,16,1)"/>
+    <rect x="478" y="135" width="22" height="245" fill="rgba(44,24,16,1)"/>
+    <path d="M478,135 Q489,98 500,135" fill="rgba(44,24,16,1)"/>
+    <circle cx="489" cy="92" r="4.5" fill="rgba(44,24,16,1)"/>
+    <rect x="760" y="135" width="22" height="245" fill="rgba(44,24,16,1)"/>
+    <path d="M760,135 Q771,98 782,135" fill="rgba(44,24,16,1)"/>
+    <circle cx="771" cy="92" r="4.5" fill="rgba(44,24,16,1)"/>
+    <rect x="210" y="215" width="165" height="165" fill="rgba(44,24,16,1)"/>
+    <path d="M210,215 Q292,155 375,215" fill="rgba(44,24,16,1)"/>
+    <rect x="910" y="215" width="165" height="165" fill="rgba(44,24,16,1)"/>
+    <path d="M910,215 Q992,155 1075,215" fill="rgba(44,24,16,1)"/>
+    <rect x="1110" y="155" width="18" height="225" fill="rgba(44,24,16,1)"/>
+    <path d="M1110,155 Q1119,118 1128,155" fill="rgba(44,24,16,1)"/>
+    <rect x="330" y="168" width="16" height="212" fill="rgba(44,24,16,1)"/>
+    <path d="M330,168 Q338,133 346,168" fill="rgba(44,24,16,1)"/>
+  </svg>
 
-  <!-- INVITATION MESSAGE -->
-  <section class="invitation-section" id="invitation">
-    <div class="section-inner">
-      <div class="paper-card reveal">
-        <div class="paper-card-corner tl"></div>
-        <div class="paper-card-corner tr"></div>
-        <div class="paper-card-corner bl"></div>
-        <div class="paper-card-corner br"></div>
-        <div class="invitation-ornament">✦ ✦ ✦</div>
-        <p class="invitation-text">
-          With the blessings of <span class="highlight">Allah</span>,<br>
-          we request the honour of your presence<br>
-          as we unite in marriage<br>
-          and begin this beautiful journey together.
-        </p>
-        <div class="invitation-ornament">✦ ✦ ✦</div>
+  <!-- Floating particles -->
+  <div id="particles-container"></div>
+
+  <div class="content-wrapper">
+
+    <!-- ═══ NAMES ═══ -->
+    <section class="section names-section">
+      <div class="bismillah fade-in-up">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ</div>
+      <div class="bismillah-en fade-in-up">In the name of Allah, the Most Gracious, the Most Merciful</div>
+
+      <div class="divider fade-in-up">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
       </div>
-    </div>
-  </section>
 
-  <!-- COUNTDOWN -->
-  <section class="countdown-section" id="countdown">
-    <div class="section-inner">
-      <div class="countdown-label reveal">Counting the Blessed Days</div>
-      <div class="countdown-container reveal">
-        <div class="countdown-item">
-          <div class="countdown-value-wrapper">
-            <span class="countdown-value" id="cd-days">000</span>
+      <h1 class="fade-in-up">
+        Mustafa
+        <span class="names-ampersand">&amp;</span>
+        Salma
+      </h1>
+      <div class="date-line fade-in-up">Sixth of August · Two Thousand Twenty-Six</div>
+    </section>
+
+    <!-- ═══ INVITATION TEXT ═══ -->
+    <section class="section">
+      <div class="divider fade-in-up" style="margin-bottom:36px">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+      <p class="invitation-text fade-in-up">
+        With the blessings of Allah <strong>سبحانه وتعالى</strong>,<br>
+        and the joyful hearts of our families,<br>
+        we cordially invite you to witness<br>
+        the union of <strong>Mustafa</strong> &amp; <strong>Salma</strong><br>
+        in a bond of love, mercy, and devotion.
+      </p>
+      <div class="divider fade-in-up" style="margin-top:36px">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+    </section>
+
+    <!-- ═══ COUNTDOWN ═══ -->
+    <section class="section">
+      <div class="countdown-card scale-in">
+        <h3 style="font-family:'Cinzel',serif;font-size:clamp(12px,2.2vw,15px);letter-spacing:5px;text-transform:uppercase;color:var(--light-brown);margin-bottom:22px">Counting The Days</h3>
+        <div class="countdown-grid">
+          <div class="countdown-item days">
+            <div class="countdown-number" id="cd-days">---</div>
+            <div class="countdown-label">Days</div>
           </div>
-          <span class="countdown-unit">Days</span>
-        </div>
-        <span class="countdown-separator">:</span>
-        <div class="countdown-item">
-          <div class="countdown-value-wrapper">
-            <span class="countdown-value" id="cd-hours">00</span>
+          <div class="countdown-item">
+            <div class="countdown-number" id="cd-hours">--</div>
+            <div class="countdown-label">Hours</div>
           </div>
-          <span class="countdown-unit">Hours</span>
-        </div>
-        <span class="countdown-separator">:</span>
-        <div class="countdown-item">
-          <div class="countdown-value-wrapper">
-            <span class="countdown-value" id="cd-minutes">00</span>
+          <div class="countdown-item">
+            <div class="countdown-number" id="cd-minutes">--</div>
+            <div class="countdown-label">Minutes</div>
           </div>
-          <span class="countdown-unit">Minutes</span>
-        </div>
-        <span class="countdown-separator">:</span>
-        <div class="countdown-item">
-          <div class="countdown-value-wrapper">
-            <span class="countdown-value" id="cd-seconds">00</span>
+          <div class="countdown-item">
+            <div class="countdown-number" id="cd-seconds">--</div>
+            <div class="countdown-label">Seconds</div>
           </div>
-          <span class="countdown-unit">Seconds</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- EVENT DETAILS -->
-  <section class="details-section" id="details">
-    <div class="section-inner">
-      <div class="details-card reveal">
-        <div class="paper-card-corner tl"></div>
-        <div class="paper-card-corner tr"></div>
-        <div class="paper-card-corner bl"></div>
-        <div class="paper-card-corner br"></div>
-        <h2 class="details-title">Event Details</h2>
-
-        <div class="detail-item">
-          <div class="detail-icon">☽</div>
-          <div class="detail-label">Date</div>
-          <div class="detail-value">Thursday, 6 August 2026</div>
-          <div class="detail-sub">Insha'Allah</div>
-        </div>
-
-        <div class="detail-divider"></div>
-
-        <div class="detail-item">
-          <div class="detail-icon">⌚</div>
-          <div class="detail-label">Time</div>
-          <div class="detail-value">Evening Ceremony</div>
-          <div class="detail-sub">Details to be announced</div>
-        </div>
-
-        <div class="detail-divider"></div>
-
-        <div class="detail-item">
-          <div class="detail-icon">✦</div>
-          <div class="detail-label">Venue</div>
-          <div class="detail-value">To Be Announced</div>
-          <div class="detail-sub">Location details will follow soon</div>
+    <!-- ═══ EVENT DETAILS ═══ -->
+    <section class="section">
+      <div class="event-card scale-in">
+        <h3>Wedding Ceremony</h3>
+        <div class="event-detail">
+          <span class="label">Date</span>
+          Thursday, 6 August 2026
+          <span class="label">Time</span>
+          After Maghrib Prayer
+          <span class="label">Venue</span>
+          Grand Islamic Center<br>
+          <span style="font-size:0.88em;color:var(--light-brown)">123 Olive Garden Road, Madinah</span>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- QURANIC VERSE -->
-  <section class="verse-section" id="verse">
-    <div class="section-inner">
-      <div class="verse-container reveal">
-        <div class="verse-quote-mark">"</div>
-        <p class="verse-arabic">
-          وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً
+    <!-- ═══ QURAN VERSE ═══ -->
+    <section class="section">
+      <div class="divider fade-in-up" style="margin-bottom:32px">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+      <p class="verse-arabic fade-in-up">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً</p>
+      <p class="verse-english fade-in-up">"And among His Signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts."</p>
+      <div class="verse-reference fade-in-up">— Quran 30:21</div>
+      <div class="divider fade-in-up" style="margin-top:32px">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
+      </div>
+    </section>
+
+    <!-- ═══ ARABIC NOTICE ═══ -->
+    <section class="section">
+      <div class="arabic-notice fade-in-up">
+        <p>
+          الفرح بإذن الله <span class="highlight">بدون معازف</span><br>
+          نرجو من السادة الحضور عدم تغيير الاناشيد<br>
+          وجزاكم الله خيرا<br>
+          مع خالص الحب والتقدير 🥹❤️
         </p>
-        <p class="verse-translation">
-          "And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquility with them, and He has put love and mercy between your hearts."
-        </p>
-        <span class="verse-reference">— Surah Ar-Rum, 30:21</span>
-        <div class="verse-quote-mark" style="transform: rotate(180deg); margin-top: -10px;">"</div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- RSVP -->
-  <section class="rsvp-section" id="rsvp">
-    <div class="section-inner">
-      <div class="rsvp-card reveal">
-        <h2 class="rsvp-title">Your Presence</h2>
-        <div class="islamic-border" style="margin-bottom: 25px;"></div>
-        <p class="rsvp-text">
-          Your presence would make this blessed occasion even more meaningful.<br>
-          Kindly let us know if you will be joining us.
-        </p>
-        <button class="rsvp-btn" id="rsvpBtn" onclick="createRipple(event)">
-          Kindly Respond
-        </button>
+    <!-- ═══ RSVP ═══ -->
+    <section class="section">
+      <button class="rsvp-btn scale-in" id="rsvp-btn">Confirm Attendance</button>
+      <p style="margin-top:14px;font-family:'Cormorant Garamond',serif;font-size:14px;color:var(--light-brown);letter-spacing:1px;opacity:0;transition:opacity 0.5s" id="rsvp-msg"></p>
+    </section>
+
+    <!-- ═══ FOOTER ═══ -->
+    <footer class="site-footer">
+      <div class="divider fade-in-up" style="margin-bottom:28px">
+        <div class="divider-line"></div>
+        <div class="divider-diamond"></div>
+        <div class="divider-line"></div>
       </div>
-    </div>
-  </section>
+      <p class="footer-dua fade-in-up">بَارَكَ اللهُ لَكُمَا وَبَارَكَ عَلَيْكُمَا</p>
+      <p class="fade-in-up" style="font-style:italic">May Allah bless you both and bless you with His boundless grace.</p>
+      <p class="fade-in-up" style="margin-top:18px;font-size:12px;opacity:0.35;letter-spacing:2px">Mustafa &amp; Salma · 6 · VIII · MMXXVI</p>
+    </footer>
 
-  <!-- FOOTER -->
-  <footer class="footer">
-    <div class="footer-text reveal">
-      We look forward to celebrating<br>
-      this blessed day with you
-    </div>
-    <div class="footer-names reveal">Mustafa & Salma</div>
-    <div class="footer-ornament reveal">✦ ✦ ✦</div>
-    <div class="footer-copy reveal">
-      Insha'Allah · 6 August 2026
-    </div>
-  </footer>
+  </div>
+</main>
 
+<!-- ═══════════════ AUDIO TOGGLE ═══════════════ -->
+<button class="audio-toggle" id="audio-toggle" aria-label="Toggle audio">
+  <svg id="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+  <svg id="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+</button>
+
+<!-- ═══════════════ TOAST ═══════════════ -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════ YOUTUBE PLAYER ═══════════════ -->
+<div id="yt-container" style="position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;overflow:hidden">
+  <div id="yt-player"></div>
 </div>
 
 <script>
-// ==================== PARTICLE SYSTEM ====================
-const canvas = document.getElementById('particles-canvas');
-const ctx = canvas.getContext('2d');
-let particles = [];
-let animationId;
+// Suppress harmless console warnings for cleaner debugging
+(function() {
+    const originalWarn = console.warn;
+    const originalError = console.error;
+    const warningsToSuppress = [
+        'Cookie', '__Secure', 'SameSite', 'Feature Policy', 'unsupported feature',
+        'WEBGL_debug_renderer_info', 'unreachable code after return', 'Partitioned cookie'
+    ];
+    
+    console.warn = function(...args) {
+        const message = args[0] || '';
+        if (typeof message === 'string' && warningsToSuppress.some(w => message.includes(w))) {
+            return;
+        }
+        originalWarn.apply(console, args);
+    };
+    
+    console.error = function(...args) {
+        const message = args[0] || '';
+        if (typeof message === 'string' && warningsToSuppress.some(w => message.includes(w))) {
+            return;
+        }
+        originalError.apply(console, args);
+    };
+})();
 
-function resizeCanvas() {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
+// ═══════════════ YOUTUBE API ═══════════════
+let ytPlayer = null, ytReady = false, isMuted = true, envelopeOpened = false;
+
+function loadYouTubeAPI() {
+    return new Promise(resolve => {
+        if (window.YT && window.YT.Player) { resolve(); return; }
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api';
+        document.head.appendChild(tag);
+        window.onYouTubeIframeAPIReady = () => resolve();
+    });
 }
-resizeCanvas();
-window.addEventListener('resize', resizeCanvas);
 
-class Particle {
-  constructor() {
-    this.reset();
-  }
+function initYouTubePlayer() {
+    ytPlayer = new YT.Player('yt-player', {
+        height: '1', width: '1',
+        videoId: 'Q9r5THdFNkU',
+        playerVars: { autoplay: 0, start: 10, controls: 0, showinfo: 0, modestbranding: 1, rel: 0, fs: 0, playsinline: 1 },
+        events: {
+            onReady: () => { 
+                ytReady = true; 
+                console.log("YouTube player ready");
+            },
+            onStateChange: e => {
+                if (e.data === YT.PlayerState.ENDED && envelopeOpened) {
+                    ytPlayer.seekTo(10);
+                    ytPlayer.playVideo();
+                }
+            },
+            onError: e => {
+                console.log("YouTube error (non-critical):", e.data);
+            }
+        }
+    });
+}
 
-  reset() {
-    this.x = Math.random() * canvas.width;
-    this.y = Math.random() * canvas.height;
-    this.size = Math.random() * 2 + 0.5;
-    this.speedX = (Math.random() - 0.5) * 0.3;
-    this.speedY = (Math.random() - 0.5) * 0.2 - 0.1;
-    this.opacity = Math.random() * 0.3 + 0.05;
-    this.opacitySpeed = (Math.random() - 0.5) * 0.005;
-    this.life = Math.random() * 200 + 100;
-    this.age = 0;
-  }
-
-  update() {
-    this.x += this.speedX;
-    this.y += this.speedY;
-    this.opacity += this.opacitySpeed;
-    this.age++;
-
-    if (this.opacity <= 0.02 || this.opacity >= 0.35) {
-      this.opacitySpeed *= -1;
+function startMusic() {
+    if (!ytPlayer || !ytReady) {
+        console.log("Waiting for YouTube player...");
+        // Retry after short delay if not ready
+        setTimeout(() => {
+            if (ytPlayer && ytReady) startMusic();
+        }, 500);
+        return;
     }
 
-    if (this.age >= this.life || this.x < -10 || this.x > canvas.width + 10 || this.y < -10 || this.y > canvas.height + 10) {
-      this.reset();
+    try {
+        ytPlayer.seekTo(10);
+        ytPlayer.mute();
+        
+        // Attempt to play (will be muted initially)
+        const playPromise = ytPlayer.playVideo();
+        
+        // Handle autoplay restrictions gracefully
+        if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.catch(error => {
+                console.log("Autoplay needs user interaction");
+                // Subtle hint that user may need to tap audio button
+                const audioBtn = document.getElementById('audio-toggle');
+                if (audioBtn && audioBtn.style.display === 'flex') {
+                    audioBtn.style.animation = 'pulse 1s ease 3';
+                    setTimeout(() => {
+                        if (audioBtn) audioBtn.style.animation = '';
+                    }, 3000);
+                }
+            });
+        }
+        
+        // Unmute after video is playing
+        setTimeout(() => {
+            if (ytPlayer && typeof ytPlayer.unMute === 'function') {
+                ytPlayer.unMute();
+                ytPlayer.setVolume(15);
+                isMuted = false;
+                updateAudioIcon();
+            }
+        }, 500);
+        
+    } catch (e) {
+        console.log("Audio initialization:", e.message);
     }
-  }
-
-  draw() {
-    ctx.beginPath();
-    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    ctx.fillStyle = `rgba(201, 169, 110, ${this.opacity})`;
-    ctx.fill();
-  }
 }
 
-function initParticles() {
-  particles = [];
-  const count = Math.min(60, Math.floor(window.innerWidth / 20));
-  for (let i = 0; i < count; i++) {
-    particles.push(new Particle());
-  }
+function toggleAudio() {
+    if (!ytPlayer || !ytReady) return;
+    try {
+        if (isMuted) { 
+            ytPlayer.unMute(); 
+            ytPlayer.setVolume(15); 
+            isMuted = false; 
+        } else { 
+            ytPlayer.mute(); 
+            isMuted = true; 
+        }
+        updateAudioIcon();
+        showToast(isMuted ? "Sound muted" : "Sound on");
+    } catch(e) {
+        console.log("Toggle audio error:", e.message);
+    }
 }
 
-function animateParticles() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  particles.forEach(p => {
-    p.update();
-    p.draw();
-  });
-  animationId = requestAnimationFrame(animateParticles);
+function updateAudioIcon() {
+    const unmutedIcon = document.getElementById('icon-unmuted');
+    const mutedIcon = document.getElementById('icon-muted');
+    if (unmutedIcon && mutedIcon) {
+        unmutedIcon.style.display = isMuted ? 'none' : 'block';
+        mutedIcon.style.display = isMuted ? 'block' : 'none';
+    }
 }
 
-initParticles();
-animateParticles();
+loadYouTubeAPI().then(() => initYouTubePlayer());
+document.getElementById('audio-toggle').addEventListener('click', toggleAudio);
 
-// ==================== ENVELOPE INTERACTION ====================
-const envelope = document.getElementById('envelope');
-const envelopeOverlay = document.getElementById('envelopeOverlay');
-const envelopeContainer = document.getElementById('envelopeContainer');
-const mainContent = document.getElementById('mainContent');
-let envelopeOpened = false;
+// ═══════════════ ENVELOPE PAPER SOUND ═══════════════
+function playPaperSound() {
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        if (ctx.state === "suspended") {
+            ctx.resume();
+        }
+        const duration = 0.35;
+        const bufferSize = Math.floor(ctx.sampleRate * duration);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+            const t = i / bufferSize;
+            data[i] = (Math.random() * 2 - 1) * Math.exp(-t * 8) * 0.25;
+            if (i < bufferSize * 0.08) data[i] *= 1.8;
+        }
+        const source = ctx.createBufferSource();
+        source.buffer = buffer;
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass'; filter.frequency.value = 2200; filter.Q.value = 0.5;
+        const gain = ctx.createGain();
+        gain.gain.value = 0.25;
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+        source.connect(filter); filter.connect(gain); gain.connect(ctx.destination);
+        source.start();
+    } catch(e) {}
+}
 
-envelopeContainer.addEventListener('click', () => {
-  if (envelopeOpened) return;
-  envelopeOpened = true;
+// ═══════════════ ENVELOPE OPEN ═══════════════
+const envelopeScene = document.getElementById('envelope-scene');
+const flapWrapper = document.getElementById('flap-wrapper');
 
-  envelope.classList.add('open');
+// Click / Tap to open
+envelopeScene.addEventListener('click', openEnvelope);
+envelopeScene.addEventListener('touchend', e => { e.preventDefault(); openEnvelope(); });
 
-  setTimeout(() => {
-    envelopeOverlay.classList.add('opened');
-    mainContent.classList.add('visible');
-    document.getElementById('audioToggle').classList.add('visible');
-    animateHeroEntrance();
-  }, 1500);
-
-  setTimeout(() => {
-    envelopeOverlay.style.display = 'none';
-  }, 2500);
+// Gentle hover tilt
+envelopeScene.addEventListener('mousemove', e => {
+    if (envelopeOpened) return;
+    const rect = envelopeScene.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to('#envelope', {
+        rotateY: x * 8, rotateX: -y * 6,
+        duration: 0.5, ease: 'power2.out'
+    });
+});
+envelopeScene.addEventListener('mouseleave', () => {
+    if (envelopeOpened) return;
+    gsap.to('#envelope', { rotateY: 0, rotateX: 0, duration: 0.6, ease: 'power2.out' });
 });
 
-// ==================== HERO ENTRANCE ANIMATION ====================
-function animateHeroEntrance() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+function openEnvelope() {
+    if (envelopeOpened) return;
+    startMusic();
+    envelopeOpened = true;
 
-  tl.to('.hero-ornament-top', { opacity: 1, duration: 1, delay: 0.2 })
-    .to('.hero-bismillah', { opacity: 1, y: 0, duration: 1 }, '-=0.6')
-    .to('.hero-divider', { opacity: 1, duration: 0.8 }, '-=0.5')
-    .to('.hero-names', { opacity: 1, duration: 1.2 }, '-=0.4')
-    .to('.hero-subtitle', { opacity: 1, y: 0, duration: 1 }, '-=0.5')
-    .to('.hero-date', { opacity: 1, duration: 0.8 }, '-=0.4')
-    .to('.scroll-indicator', { opacity: 1, duration: 0.8 }, '-=0.3');
+    const card = document.getElementById('inner-card');
+    const overlay = document.getElementById('envelope-overlay');
+    const prompt = document.getElementById('open-prompt');
+    const audioBtn = document.getElementById('audio-toggle');
+    const mainContent = document.getElementById('main-content');
+
+    const tl = gsap.timeline();
+
+    // Phase 1: Envelope lifts & tilts forward
+    tl.to('#envelope', {
+        rotateX: 8, rotateY: 0, y: -10,
+        duration: 0.5, ease: 'power2.out'
+    })
+    // Phase 2: Flap opens
+    .add(() => playPaperSound())
+    .to(flapWrapper, {
+        rotateX: -170,
+        duration: 1.6,
+        ease: 'power3.inOut'
+    }, '-=0.15')
+    // Phase 3: Card slides up
+    .to(card, {
+        y: '-145%',
+        duration: 1.3,
+        ease: 'expo.out'
+    }, '-=0.9')
+    // Phase 4: Overlay fades
+    .to(prompt, { opacity: 0, duration: 0.4 }, '-=1.3')
+    .to(overlay, {
+        opacity: 0,
+        duration: 1.4,
+        ease: 'power2.inOut',
+        onComplete: () => { overlay.style.display = 'none'; }
+    }, '-=1.0')
+    // Phase 5: Main content
+    .set(mainContent, { display: 'block' })
+    .fromTo(mainContent, { opacity: 0 }, {
+        opacity: 1, duration: 1.2, ease: 'power2.out'
+    }, '-=1.0')
+    // Init everything
+    .add(() => {
+        audioBtn.style.display = 'flex';
+        createDustParticles();
+        initScrollAnimations();
+        startCountdown();
+    }, '-=0.7');
 }
 
-// ==================== COUNTDOWN ====================
-const weddingDate = new Date('August 6, 2026 18:00:00').getTime();
+// Subtle idle floating
+gsap.to('.envelope-scene', {
+    y: -5, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1
+});
+gsap.to('#open-prompt', {
+    opacity: 0.9, duration: 2, ease: 'sine.inOut', yoyo: true, repeat: -1
+});
+
+// ═══════════════ DUST PARTICLES ═══════════════
+function createDustParticles() {
+    const container = document.getElementById('particles-container');
+    if (!container) return;
+    for (let i = 0; i < 22; i++) {
+        const p = document.createElement('div');
+        p.className = 'dust-particle';
+        const size = 1.2 + Math.random() * 2.2;
+        p.style.width = size + 'px';
+        p.style.height = size + 'px';
+        p.style.left = Math.random() * 100 + '%';
+        p.style.top = (40 + Math.random() * 60) + '%';
+        p.style.animationDuration = (10 + Math.random() * 18) + 's';
+        p.style.animationDelay = Math.random() * 10 + 's';
+        container.appendChild(p);
+    }
+}
+
+// ═══════════════ SCROLL ANIMATIONS ═══════════════
+function initScrollAnimations() {
+    gsap.registerPlugin(ScrollTrigger);
+
+    gsap.utils.toArray('.fade-in-up').forEach((el, i) => {
+        gsap.fromTo(el,
+            { opacity: 0, y: 32 },
+            {
+                opacity: 1, y: 0,
+                duration: 0.85,
+                ease: 'power3.out',
+                scrollTrigger: { trigger: el, start: 'top 88%', toggleActions: 'play none none none' },
+                delay: (i % 3) * 0.08
+            }
+        );
+    });
+
+    gsap.utils.toArray('.scale-in').forEach(el => {
+        gsap.fromTo(el,
+            { opacity: 0, scale: 0.92 },
+            {
+                opacity: 1, scale: 1,
+                duration: 0.75,
+                ease: 'back.out(1.3)',
+                scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+            }
+        );
+    });
+
+    // Parallax mosque
+    gsap.to('.mosque-silhouette', {
+        y: -50, ease: 'none',
+        scrollTrigger: { trigger: '#main-content', start: 'top top', end: 'bottom bottom', scrub: 1.5 }
+    });
+}
+
+// ═══════════════ COUNTDOWN ═══════════════
+const targetDate = new Date('2026-08-06T00:00:00').getTime();
+let countdownInterval;
+
+function startCountdown() {
+    updateCountdown();
+    countdownInterval = setInterval(updateCountdown, 1000);
+}
 
 function updateCountdown() {
-  const now = new Date().getTime();
-  const distance = weddingDate - now;
-
-  if (distance < 0) {
-    document.getElementById('cd-days').textContent = '000';
-    document.getElementById('cd-hours').textContent = '00';
-    document.getElementById('cd-minutes').textContent = '00';
-    document.getElementById('cd-seconds').textContent = '00';
-    return;
-  }
-
-  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  const daysEl = document.getElementById('cd-days');
-  const hoursEl = document.getElementById('cd-hours');
-  const minutesEl = document.getElementById('cd-minutes');
-  const secondsEl = document.getElementById('cd-seconds');
-
-  const newDays = String(days).padStart(3, '0');
-  const newHours = String(hours).padStart(2, '0');
-  const newMinutes = String(minutes).padStart(2, '0');
-  const newSeconds = String(seconds).padStart(2, '0');
-
-  if (daysEl.textContent !== newDays) {
-    daysEl.textContent = newDays;
-    triggerFlipAnimation(daysEl);
-  }
-  if (hoursEl.textContent !== newHours) {
-    hoursEl.textContent = newHours;
-    triggerFlipAnimation(hoursEl);
-  }
-  if (minutesEl.textContent !== newMinutes) {
-    minutesEl.textContent = newMinutes;
-    triggerFlipAnimation(minutesEl);
-  }
-  if (secondsEl.textContent !== newSeconds) {
-    secondsEl.textContent = newSeconds;
-    triggerFlipAnimation(secondsEl);
-  }
-}
-
-function triggerFlipAnimation(el) {
-  el.classList.add('changing');
-  setTimeout(() => el.classList.remove('changing'), 600);
-}
-
-setInterval(updateCountdown, 1000);
-updateCountdown();
-
-// ==================== GSAP SCROLL ANIMATIONS ====================
-gsap.registerPlugin(ScrollTrigger);
-
-// Reveal animations
-gsap.utils.toArray('.reveal').forEach((el, i) => {
-  gsap.fromTo(el, {
-    opacity: 0,
-    y: 40
-  }, {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: el,
-      start: 'top 85%',
-      toggleActions: 'play none none none'
-    },
-    delay: i % 3 * 0.15
-  });
-});
-
-// Parallax effect on sections
-gsap.utils.toArray('section').forEach(section => {
-  gsap.to(section, {
-    backgroundPosition: '50% 100%',
-    ease: 'none',
-    scrollTrigger: {
-      trigger: section,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1
+    const diff = targetDate - Date.now();
+    if (diff <= 0) {
+        ['cd-days','cd-hours','cd-minutes','cd-seconds'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.textContent = id === 'cd-days' ? '0' : '00';
+        });
+        if (countdownInterval) clearInterval(countdownInterval);
+        return;
     }
-  });
-});
+    const d = Math.floor(diff / 86400000);
+    const h = String(Math.floor((diff % 86400000) / 3600000)).padStart(2, '0');
+    const m = String(Math.floor((diff % 3600000) / 60000)).padStart(2, '0');
+    const s = String(Math.floor((diff % 60000) / 1000)).padStart(2, '0');
+    animateDigit('cd-days', d);
+    animateDigit('cd-hours', h);
+    animateDigit('cd-minutes', m);
+    animateDigit('cd-seconds', s);
+}
 
-// Subtle parallax on paper cards
-gsap.utils.toArray('.paper-card, .details-card, .rsvp-card').forEach(card => {
-  gsap.to(card, {
-    y: -15,
-    ease: 'none',
-    scrollTrigger: {
-      trigger: card,
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1
+function animateDigit(id, val) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const str = String(val);
+    if (el.textContent !== str) {
+        gsap.to(el, {
+            y: -5, opacity: 0.35, duration: 0.12, ease: 'power2.in',
+            onComplete: () => {
+                el.textContent = str;
+                el.classList.add('glow');
+                gsap.to(el, {
+                    y: 0, opacity: 1, duration: 0.22, ease: 'power2.out',
+                    onComplete: () => el.classList.remove('glow')
+                });
+            }
+        });
     }
-  });
-});
-
-// Stagger animation for countdown items
-gsap.fromTo('.countdown-item', {
-  opacity: 0,
-  y: 20,
-  scale: 0.9
-}, {
-  opacity: 1,
-  y: 0,
-  scale: 1,
-  duration: 0.6,
-  stagger: 0.1,
-  ease: 'back.out(1.5)',
-  scrollTrigger: {
-    trigger: '.countdown-container',
-    start: 'top 80%'
-  }
-});
-
-// ==================== RSVP BUTTON RIPPLE ====================
-function createRipple(event) {
-  const button = event.currentTarget;
-  const ripple = document.createElement('span');
-  ripple.classList.add('rsvp-btn-ripple');
-
-  const rect = button.getBoundingClientRect();
-  const size = Math.max(rect.width, rect.height);
-  ripple.style.width = ripple.style.height = size + 'px';
-  ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
-  ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
-
-  button.appendChild(ripple);
-  setTimeout(() => ripple.remove(), 600);
 }
 
-// ==================== AUDIO TOGGLE ====================
-const audioToggle = document.getElementById('audioToggle');
-let audioPlaying = false;
-let audioContext = null;
-let oscillator = null;
-let gainNode = null;
-
-// Create a soft ambient tone using Web Audio API
-function createAmbientSound() {
-  audioContext = new (window.AudioContext || window.webkitAudioContext)();
-
-  // Create a soft pad sound
-  const masterGain = audioContext.createGain();
-  masterGain.gain.value = 0;
-  masterGain.connect(audioContext.destination);
-
-  // Multiple oscillators for a rich pad
-  const frequencies = [130.81, 164.81, 196.00, 261.63, 329.63];
-  const oscs = [];
-
-  frequencies.forEach(freq => {
-    const osc = audioContext.createOscillator();
-    const oscGain = audioContext.createGain();
-
-    osc.type = 'sine';
-    osc.frequency.value = freq;
-    oscGain.gain.value = 0.015;
-
-    osc.connect(oscGain);
-    oscGain.connect(masterGain);
-    osc.start();
-    oscs.push({ osc, gain: oscGain });
-  });
-
-  // Add subtle vibrato
-  const lfo = audioContext.createOscillator();
-  const lfoGain = audioContext.createGain();
-  lfo.frequency.value = 0.3;
-  lfoGain.gain.value = 2;
-  lfo.connect(lfoGain);
-  oscs.forEach(o => lfoGain.connect(o.osc.frequency));
-  lfo.start();
-
-  gainNode = masterGain;
-  oscillator = { oscs, lfo };
+// ═══════════════ RSVP ═══════════════
+const rsvpBtn = document.getElementById('rsvp-btn');
+if (rsvpBtn) {
+    rsvpBtn.addEventListener('click', function() {
+        const msg = document.getElementById('rsvp-msg');
+        if (msg) {
+            msg.textContent = 'JazakAllah Khair — your presence is confirmed ❤️';
+            msg.style.opacity = '1';
+            msg.style.color = 'var(--gold-dark)';
+        }
+        gsap.fromTo(this, { scale: 1 }, { scale: 0.95, duration: 0.1, yoyo: true, repeat: 1 });
+        showToast('May Allah accept your presence');
+    });
 }
 
-audioToggle.addEventListener('click', () => {
-  if (!audioContext) {
-    createAmbientSound();
-  }
+function showToast(text) {
+    const t = document.getElementById('toast');
+    if (!t) return;
+    t.textContent = text;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
 
-  audioPlaying = !audioPlaying;
-
-  if (audioPlaying) {
-    audioToggle.classList.add('playing');
-    gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 1);
-  } else {
-    audioToggle.classList.remove('playing');
-    gainNode.gain.linearRampToValueAtTime(0, audioContext.currentTime + 1);
-  }
+// Preload particles when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    // Particles will be created when envelope opens
 });
-
-// ==================== SMOOTH SCROLL POLYFILL ====================
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', function(e) {
-    e.preventDefault();
-    const target = document.querySelector(this.getAttribute('href'));
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  });
-});
-
-// ==================== MOUSE PARALLAX ON HERO ====================
-const hero = document.getElementById('hero');
-if (hero) {
-  document.addEventListener('mousemove', (e) => {
-    if (window.innerWidth < 768) return;
-    const x = (e.clientX / window.innerWidth - 0.5) * 10;
-    const y = (e.clientY / window.innerHeight - 0.5) * 10;
-
-    gsap.to('.hero-ornament-top', { x: x * 0.5, y: y * 0.5, duration: 1, ease: 'power2.out' });
-    gsap.to('.hero-divider', { x: x * 0.3, y: y * 0.3, duration: 1, ease: 'power2.out' });
-  });
-}
-
-// ==================== PERFORMANCE: REDUCE MOTION ====================
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  gsap.globalTimeline.timeScale(0.5);
-  document.getElementById('particles-canvas').style.display = 'none';
-}
 </script>
 </body>
 </html>
